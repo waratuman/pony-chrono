@@ -7,7 +7,7 @@ class Date
     """
 
     var year: I32 val
-    var month: U8 val
+    var month: Month val
     var day: U8 val
 
     // Internal variables
@@ -48,14 +48,10 @@ class Date
 
         day = (doy - _doy_from_month(m')).u8() + 1
 
-        month = m' + if (m' < 10) then
-            3
-        else
-            - 9
-        end
+        month = _month_from_u8(m' + if (m' < 10) then 3 else -9 end)
 
         // Move back into Gregorian
-        year = year + if month < 3 then
+        year = year + if month() < 3 then
             1
         else
             0 
@@ -95,7 +91,7 @@ class Date
         dse = ((era * 146097) + doe.i64())
 
         year = year'
-        month = month'
+        month = _month_from_u8(month')
         day = day'
 
 
@@ -166,3 +162,20 @@ class Date
         elseif doy' < 306 then 9
         elseif doy' < 337 then 10
         else 11 end
+    
+    fun tag _month_from_u8(value: U8 val): Month val =>
+        match value
+        | 1 => January
+        | 2 => Febuaray
+        | 3 => March
+        | 4 => April
+        | 5 => May
+        | 6 => June
+        | 7 => July
+        | 8 => August
+        | 9 => September
+        | 10 => October
+        | 11 => November
+        | 12 => December
+        else January
+        end

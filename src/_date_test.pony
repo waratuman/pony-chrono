@@ -24,19 +24,19 @@ class _TestDateCivil is UnitTest
         var date = Date.civil(1970, 1, 1)
         h.assert_eq[I64](date.days_since_epoch(), 0)
         h.assert_eq[I32](date.year, 1970)
-        h.assert_eq[U8](date.month, 1)
+        h.assert_eq[Month](date.month, January)
         h.assert_eq[U8](date.day, 1)
         
         date = Date.civil(I32.min_value(), 1, 1)
         h.assert_eq[I64](date.days_since_epoch(), -784353015833)
         h.assert_eq[I32](date.year, I32.min_value())
-        h.assert_eq[U8](date.month, 1)
+        h.assert_eq[Month](date.month, January)
         h.assert_eq[U8](date.day, 1)
 
         date = Date.civil(I32.max_value(), 12, 31)
         h.assert_eq[I64](date.days_since_epoch(), 784351576776)
         h.assert_eq[I32](date.year, I32.max_value())
-        h.assert_eq[U8](date.month, 12)
+        h.assert_eq[Month](date.month, December)
         h.assert_eq[U8](date.day, 31)
 
 
@@ -50,19 +50,19 @@ class _TestDateCreate is UnitTest
         var date = Date(0)
         h.assert_eq[I64](date.days_since_epoch(), 0)
         h.assert_eq[I32](date.year, 1970)
-        h.assert_eq[U8](date.month, 1)
+        h.assert_eq[Month](date.month, January)
         h.assert_eq[U8](date.day, 1)
         
         date = Date(-784353015833)
         h.assert_eq[I64](date.days_since_epoch(), -784353015833)
         h.assert_eq[I32](date.year, I32.min_value())
-        h.assert_eq[U8](date.month, 1)
+        h.assert_eq[Month](date.month, January)
         h.assert_eq[U8](date.day, 1)
 
         date = Date(784351576776)
         h.assert_eq[I64](date.days_since_epoch(), 784351576776)
         h.assert_eq[I32](date.year, I32.max_value())
-        h.assert_eq[U8](date.month, 12)
+        h.assert_eq[Month](date.month, December)
         h.assert_eq[U8](date.day, 31)
 
         // let r: String val = recover

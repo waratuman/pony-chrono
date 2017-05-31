@@ -3,6 +3,7 @@ type Month is
     | Febuaray
     | March
     | April
+    | May
     | June
     | July
     | August
@@ -12,7 +13,8 @@ type Month is
     | December
     )
 
-primitive January
+
+primitive January is Comparable[Month]
 
     fun apply(): U8 val =>
         0
@@ -20,8 +22,11 @@ primitive January
     fun string(): String iso^ =>
         "January".string()
 
+    fun box lt(that: Month): Bool val =>
+        apply() < that.apply()
 
-primitive Febuaray
+
+primitive Febuaray is Comparable[Month]
 
     fun apply(): U8 val =>
         1
@@ -29,8 +34,11 @@ primitive Febuaray
     fun string(): String iso^ =>
         "Febuaray".string()
 
+    fun box lt(that: Month): Bool val =>
+        apply() < that.apply()
 
-primitive March
+
+primitive March is Comparable[Month]
     
     fun apply(): U8 val =>
         2
@@ -38,8 +46,11 @@ primitive March
     fun string(): String iso^ =>
         "March".string()
 
+    fun box lt(that: Month): Bool val =>
+        apply() < that.apply()
 
-primitive April
+
+primitive April is Comparable[Month]
 
     fun apply(): U8 val =>
         3
@@ -47,8 +58,11 @@ primitive April
     fun string(): String iso^ =>
         "April".string()
 
+    fun box lt(that: Month): Bool val =>
+        apply() < that.apply()
 
-primitive May
+
+primitive May is Comparable[Month]
     
     fun apply(): U8 val =>
         4
@@ -56,8 +70,11 @@ primitive May
     fun string(): String iso^ =>
         "May".string()
 
+    fun box lt(that: Month): Bool val =>
+        apply() < that.apply()
 
-primitive June
+
+primitive June is Comparable[Month]
     
     fun apply(): U8 val =>
         5
@@ -65,8 +82,11 @@ primitive June
     fun string(): String iso^ =>
         "June".string()
 
+    fun box lt(that: Month): Bool val =>
+        apply() < that.apply()
 
-primitive July
+
+primitive July is Comparable[Month]
 
     fun apply(): U8 val =>
         6
@@ -74,8 +94,11 @@ primitive July
     fun string(): String iso^ =>
         "July".string()
 
+    fun box lt(that: Month): Bool val =>
+        apply() < that.apply()
 
-primitive August
+
+primitive August is Comparable[Month]
 
     fun apply(): U8 val =>
         7
@@ -83,8 +106,11 @@ primitive August
     fun string(): String iso^ =>
         "August".string()
 
+    fun box lt(that: Month): Bool val =>
+        apply() < that.apply()
 
-primitive September
+
+primitive September is Comparable[Month]
 
     fun apply(): U8 val =>
         8
@@ -92,8 +118,11 @@ primitive September
     fun string(): String iso^ =>
         "September".string()
 
+    fun box lt(that: Month): Bool val =>
+        apply() < that.apply()
 
-primitive October
+
+primitive October is Comparable[Month]
 
     fun apply(): U8 val =>
         9
@@ -101,8 +130,11 @@ primitive October
     fun string(): String iso^ =>
         "October".string()
 
+    fun box lt(that: Month): Bool val =>
+        apply() < that.apply()
 
-primitive November
+
+primitive November is Comparable[Month]
 
     fun apply(): U8 val =>
         10
@@ -110,11 +142,17 @@ primitive November
     fun string(): String iso^ =>
         "November".string()
 
+    fun box lt(that: Month): Bool val=>
+        apply() < that.apply()
 
-primitive December
+
+primitive December is Comparable[Month]
 
     fun apply(): U8 val =>
         11
 
     fun string(): String iso^ =>
         "December".string()
+
+    fun box lt(that: Month): Bool val =>
+        apply() < that.apply()
