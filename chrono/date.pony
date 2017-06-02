@@ -123,6 +123,9 @@ class Date
         """
         days_since_epoch() * 86_400
 
+    fun box format(fmt: String val): String val =>
+        stdlib_time.Date(timestamp(), 0).format(fmt)
+
     // fun day_of_year() =>
     //     """
     //     Returns the day of the year ([1..366]).
