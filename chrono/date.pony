@@ -65,12 +65,16 @@ class Date
         end
 
         
-    new ref civil(year': I32 val = 1970, month': U8 val = 1, day': U8 val = 1) =>
+    new ref civil(year': I32 val = 1970, month': (U8 val | Month val) = January, day': U8 val = 1) =>
         """
         Create a new Date given the year, month and day.
         """
         // Calculations assume March 1st as the start of the year
-        month = _month_from_u8(month')
+        month = match month'
+        | let v: U8 val => _month_from_u8(v)
+        | let v: Month val => v
+        else January
+        end
 
         let year'': I64 val = if (month < March) then
             year'.i64() - 1

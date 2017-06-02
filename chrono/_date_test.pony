@@ -27,6 +27,12 @@ class _TestDateCivil is UnitTest
         h.assert_eq[I32](date.year, 1970)
         h.assert_eq[Month](date.month, January)
         h.assert_eq[U8](date.day, 1)
+
+        date = Date.civil(1970, January, 1)
+        h.assert_eq[I64](date.days_since_epoch(), 0)
+        h.assert_eq[I32](date.year, 1970)
+        h.assert_eq[Month](date.month, January)
+        h.assert_eq[U8](date.day, 1)
         
         date = Date.civil(I32.min_value(), 1, 1)
         h.assert_eq[I64](date.days_since_epoch(), -784353015833)
