@@ -1,3 +1,5 @@
+use stdlib_time = "time"
+
 class Date
     """
     Represents a date using the Proleptic Gregorian calendar.
@@ -19,16 +21,21 @@ class Date
     var _doe: U32 val   // Day of era [0, 146096]
     var _dse: I64 val   // Number of days since internal epoch (March 1st, 0)
 
-    new ref create(z: I64 val)  =>
+    new ref create(z': (I64 val | None val) = None) =>
         """
         Create a new Date given the number of days since epoch, an I64
-        within the range [-784353015833, 784351576776]. If the value is outside
+        within the range [-784_353_015_833, 784_351_576_776]. If the value is outside
         the range the algorithms used may not work correctly.
         """
-        // an error is thrown.
-        // if (z < -784_353_015_833) or (z > 784_351_576_776) then
-        //     error
-        // end
+
+        let z = match z'
+        | let v: I64 val => v
+        | let v: None val =>
+            (let seconds, let nanonseconds) = stdlib_time.Time.now()
+            seconds / 86_400
+        else 0
+        end
+
 
         _dse = z + 719_468
 
@@ -114,7 +121,7 @@ class Date
         """
         Returns Unix Time, the number of seconds since January 1st, 1970.
         """
-        days_since_epoch() * 86400
+        days_since_epoch() * 86_400
 
     // fun day_of_year() =>
     //     """

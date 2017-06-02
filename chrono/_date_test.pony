@@ -66,6 +66,9 @@ class _TestDateCreate is UnitTest
         h.assert_eq[Month](date.month, December)
         h.assert_eq[U8](date.day, 31)
 
+        date = Date()
+        h.assert_eq[I64](date.days_since_epoch(), date.timestamp() / 86_400)
+
 
 class _TestDateWeekday is UnitTest
 
