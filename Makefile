@@ -3,11 +3,11 @@
 all: build
 
 build:
-	ponyc -p src -o build src
+	ponyc -p chrono -o build chrono
 
 clean:
 	rm -rf build
 
 test:
-	ponyc -p src --debug -o build src
-	./build/src
+	ponyc -p chrono --debug -o build chrono
+	./build/chrono

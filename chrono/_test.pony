@@ -8,3 +8,4 @@ actor Main is TestList
 
     fun tag tests(test: PonyTest) =>
         DateTestList.make().tests(test)
+        TimeTestList.make().tests(test)

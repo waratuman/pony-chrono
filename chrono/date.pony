@@ -4,6 +4,8 @@ class Date
 
     Minimum Date: January 1st, -5368710
     Maximum Date: December 31st, 5368709
+
+    Reference: http://howardhinnant.github.io/date_algorithms.html
     """
 
     var year: I32 val
@@ -17,28 +19,27 @@ class Date
     var doe: U32 val   // Day of era [0, 146096]
     var dse: I64 val   // Number of days since internal epoch (March 1st, 0)
 
-
     new ref create(z: I64 val) ? =>
         """
         Create a new Date given the number of days since epoch, an I64
         within the range [-784353015833, 784351576776]. If the value is outside
         the range an error is thrown.
         """
-        if (z < -784353015833) or (z > 784351576776) then
+        if (z < -784_353_015_833) or (z > 784_351_576_776) then
             error
         end
 
-        dse = z + 719468
+        dse = z + 719_468
 
         era = if dse >= 0 then
             dse
         else
-            dse - 146096
-        end / 146097
+            dse - 146_096
+        end / 146_097
 
-        doe = (dse - (era * 146097)).u32()
+        doe = (dse - (era * 146_097)).u32()
         yoe = (
-            (doe - ((doe / 1460) + (doe / 36524)) - (doe / 146096))
+            (doe - ((doe / 1_460) + (doe / 36_524)) - (doe / 146_096))
         / 365).u16()
 
         year = (yoe.i32() + (era.i32() * 400))
@@ -60,7 +61,7 @@ class Date
         """
         Create a new Date given the year, month and day.
         """
-        // Calculation assume March 1st as the start of the year
+        // Calculations assume March 1st as the start of the year
         month = _month_from_u8(month')
 
         let year'': I64 val = if (month < March) then
@@ -83,15 +84,15 @@ class Date
     
         doe = ((yoe.u32() * 365) + (yoe.u32() / 4) + doy.u32()) - (yoe.u32() / 100)
 
-        dse = ((era * 146097) + doe.i64())
+        dse = ((era * 146_097) + doe.i64())
 
         year = year'
         day = day'
 
 
-
     fun box days_since_epoch(): I64 val =>
         dse - 719468
+
 
     fun box weekday(): Weekday =>
         """
@@ -108,6 +109,38 @@ class Date
         else Monday
         end
     
+
+    // fun day() =>
+    //     """
+    //     Returns the day of the month ([1..31]).
+    //     """
+
+
+    // fun day_of_year() =>
+    //     """
+    //     Returns the day of the year ([1..366]).
+    //     """
+
+
+    // fun iso_week(): (I32 val, U8 val) =>
+    //     """
+    //     Returns the week year and week of the year, with the first week being
+    //     the week that contains the first Thursday of the year. The first week
+    //     according to ISO8601
+    //     """
+    //     (doy / 7)
+    //     dse
+
+
+    // fun month() =>
+    //     """
+    //     Returns the month of the year ([1..12]).
+    //     """
+
+    // fun year() =>
+    //     """
+    //     Returns the year of the date.
+    //     """
 
 
     fun tag _is_leap(year': I32 val): Bool val =>
