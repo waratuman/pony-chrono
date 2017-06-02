@@ -8,6 +8,8 @@ class Time
     new ref create(z: U64 val) =>
         _nanoseconds = z
     
+    fun nanos(): U64 val =>
+        _nanoseconds
 
     fun sec(): USize val =>
         """
