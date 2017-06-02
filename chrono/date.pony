@@ -8,46 +8,47 @@ class Date
     Reference: http://howardhinnant.github.io/date_algorithms.html
     """
 
-    var year: I32 val
-    var month: Month val
-    var day: U8 val
+    var year: I32 val       // The year of the date.
+    var month: Month val    // The month of the year.
+    var day: U8 val         // The day of the month ([1..31]).
 
     // Internal variables
-    var era: I64 val   // The era (a 400 year peroid that is repeated in the Gregorian calendar)
-    var yoe: U16 val   // Year of era [0, 399] 
-    var doy: U16 val   // Day of year [0, 365] (0 is March 1st)
-    var doe: U32 val   // Day of era [0, 146096]
-    var dse: I64 val   // Number of days since internal epoch (March 1st, 0)
+    var _era: I64 val   // The era (a 400 year peroid that is repeated in the Gregorian calendar)
+    var _yoe: U16 val   // Year of era [0, 399] 
+    var _doy: U16 val   // Day of year [0, 365] (0 is March 1st)
+    var _doe: U32 val   // Day of era [0, 146096]
+    var _dse: I64 val   // Number of days since internal epoch (March 1st, 0)
 
-    new ref create(z: I64 val) ? =>
+    new ref create(z: I64 val)  =>
         """
         Create a new Date given the number of days since epoch, an I64
         within the range [-784353015833, 784351576776]. If the value is outside
-        the range an error is thrown.
+        the range the algorithms used may not work correctly.
         """
-        if (z < -784_353_015_833) or (z > 784_351_576_776) then
-            error
-        end
+        // an error is thrown.
+        // if (z < -784_353_015_833) or (z > 784_351_576_776) then
+        //     error
+        // end
 
-        dse = z + 719_468
+        _dse = z + 719_468
 
-        era = if dse >= 0 then
-            dse
+        _era = if _dse >= 0 then
+            _dse
         else
-            dse - 146_096
+            _dse - 146_096
         end / 146_097
 
-        doe = (dse - (era * 146_097)).u32()
-        yoe = (
-            (doe - ((doe / 1_460) + (doe / 36_524)) - (doe / 146_096))
+        _doe = (_dse - (_era * 146_097)).u32()
+        _yoe = (
+            (_doe - ((_doe / 1_460) + (_doe / 36_524)) - (_doe / 146_096))
         / 365).u16()
 
-        year = (yoe.i32() + (era.i32() * 400))
-        doy = (doe.i32() - (((365 * yoe.i32()) + (yoe.i32() / 4)) - (yoe.i32() / 100))).u16()
+        year = (_yoe.i32() + (_era.i32() * 400))
+        _doy = (_doe.i32() - (((365 * _yoe.i32()) + (_yoe.i32() / 4)) - (_yoe.i32() / 100))).u16()
 
-        month = _month_from_doy(doy)
+        month = _month_from_doy(_doy)
 
-        day = (doy - _doy_from_month(month)).u8() + 1
+        day = (_doy - _doy_from_month(month)).u8() + 1
 
         // Move back into Gregorian
         year = year + if month < March then
@@ -73,32 +74,32 @@ class Date
 
         let day'' = day'
 
-        era = if year'' >= 0 then
+        _era = if year'' >= 0 then
             year''
         else
             year'' - 399
         end / 400
     
-        yoe = (year'' - (era.i64() * 400)).u16()
-        doy = _doy_from_month(month) + (day''.u16() - 1)
+        _yoe = (year'' - (_era.i64() * 400)).u16()
+        _doy = _doy_from_month(month) + (day''.u16() - 1)
     
-        doe = ((yoe.u32() * 365) + (yoe.u32() / 4) + doy.u32()) - (yoe.u32() / 100)
+        _doe = ((_yoe.u32() * 365) + (_yoe.u32() / 4) + _doy.u32()) - (_yoe.u32() / 100)
 
-        dse = ((era * 146_097) + doe.i64())
+        _dse = ((_era * 146_097) + _doe.i64())
 
         year = year'
         day = day'
 
 
     fun box days_since_epoch(): I64 val =>
-        dse - 719468
+        _dse - 719468
 
 
     fun box weekday(): Weekday =>
         """
         Returns the day of the week.
         """
-        match dse % 7
+        match _dse % 7
         | 0 => Wednesday
         | 1 => Thursday
         | 2 => Friday
@@ -109,12 +110,11 @@ class Date
         else Monday
         end
     
-
-    // fun day() =>
-    //     """
-    //     Returns the day of the month ([1..31]).
-    //     """
-
+    fun box timestamp(): I64 val =>
+        """
+        Returns Unix Time, the number of seconds since January 1st, 1970.
+        """
+        days_since_epoch() * 86400
 
     // fun day_of_year() =>
     //     """
@@ -128,20 +128,8 @@ class Date
     //     the week that contains the first Thursday of the year. The first week
     //     according to ISO8601
     //     """
-    //     (doy / 7)
-    //     dse
-
-
-    // fun month() =>
-    //     """
-    //     Returns the month of the year ([1..12]).
-    //     """
-
-    // fun year() =>
-    //     """
-    //     Returns the year of the date.
-    //     """
-
+    //     (_doy / 7)
+    //     _dse
 
     fun tag _is_leap(year': I32 val): Bool val =>
         if (year' % 4) != 0 then

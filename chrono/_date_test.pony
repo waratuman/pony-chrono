@@ -13,6 +13,7 @@ actor DateTestList is TestList
         test(_TestDateCivil)
         test(_TestDateCreate)
         test(_TestDateWeekday)
+        test(_TestDateTimestamp)
         
 
 class _TestDateCivil is UnitTest
@@ -46,7 +47,7 @@ class _TestDateCreate is UnitTest
     fun name(): String =>
         "Date.create"
     
-    fun tag apply(h: TestHelper) ? =>
+    fun tag apply(h: TestHelper) =>
         var date = Date(0)
         h.assert_eq[I64](date.days_since_epoch(), 0)
         h.assert_eq[I32](date.year, 1970)
@@ -65,35 +66,13 @@ class _TestDateCreate is UnitTest
         h.assert_eq[Month](date.month, December)
         h.assert_eq[U8](date.day, 31)
 
-        // let r: String val = recover
-        //     let result: String ref = String
-        //     result.append(date.era.string())
-        //     result.append("\n")
-        //     result.append(date.yoe.string())
-        //     result.append("\n")
-        //     result.append(date.doy.string())
-        //     result.append("\n")
-        //     result.append(date.doe.string())
-        //     result.append("\n")
-        //     result.append(date.dse.string())
-        //     result.append("\n")
-        //     result.append("\n")
-        //     result.append(date.year.string())
-        //     result.append("-")
-        //     result.append(date.month.string())
-        //     result.append("-")
-        //     result.append(date.day.string())
-        //     result
-        // end
-        // h.env.out.print(r)
-
 
 class _TestDateWeekday is UnitTest
 
     fun name(): String =>
         "Date.iso_weekday"
     
-    fun tag apply(h: TestHelper) ? =>
+    fun tag apply(h: TestHelper) =>
         var date = Date(0)
         h.assert_eq[Weekday](date.weekday(), Thursday)
 
@@ -103,6 +82,15 @@ class _TestDateWeekday is UnitTest
         date = Date(784351576776)
         h.assert_eq[Weekday](date.weekday(), Tuesday)
 
+class _TestDateTimestamp is UnitTest
+    
+    fun name(): String =>
+        "Date#timestamp"
+    
+    fun tag apply(h: TestHelper) =>
+        var date = Date(0)
+        h.assert_eq[I64](date.timestamp(), 0)
+        
         // let r: String val = recover
         //     let result: String ref = String
         //     result.append(date.era.string())
