@@ -69,7 +69,7 @@ class Date
         """
         Create a new Date given the year, month and day.
         """
-        // Calculations assume March 1st as the start of the year
+        // Internal calculations assume March 1st as the start of the year
         month = match month'
         | let v: U8 val => _month_from_u8(v)
         | let v: Month val => v
