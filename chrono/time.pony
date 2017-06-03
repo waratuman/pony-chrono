@@ -32,3 +32,9 @@ class Time
 
     fun nsec(): U64 val =>
         _nanoseconds % 1_000_000_000
+
+    fun u64(): U64 val =>
+        """
+        Returns a U64 representing the number of nanoseconds since midnight.
+        """
+        _nanoseconds
