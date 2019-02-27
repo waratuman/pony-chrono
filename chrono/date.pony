@@ -28,7 +28,6 @@ class Date
         | let v: None val =>
             (let seconds, let nanonseconds) = stdlib_time.Time.now()
             seconds / 86_400
-        else 0
         end
 
         _dse = z + 719_468
@@ -52,10 +51,9 @@ class Date
         Create a new Date given the year, month and day.
         """
         // Internal calculations assume March 1st as the start of the year
-        let month'' = match month'
+        let month'' : Month = match month'
         | let v: U8 val => _month_from_u8(v)
         | let v: Month val => v
-        else January
         end
 
         let year'': I64 val = if (month'' < March) then
@@ -142,8 +140,8 @@ class Date
 
 
     // TODO: Replace this
-    fun box format(fmt: String val): String val =>
-        stdlib_time.Date(timestamp(), 0).format(fmt)
+    fun box format(fmt: String val): String val ? =>
+        stdlib_time.PosixDate(timestamp(), 0).format(fmt)?
 
 
     // fun day_of_year() =>
@@ -191,7 +189,6 @@ class Date
         | December => 275
         | January => 306
         | Febuaray => 337
-        else 0
         end
 
 
